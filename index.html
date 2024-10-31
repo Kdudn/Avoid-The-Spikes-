@@ -19,6 +19,14 @@
 		quality: "low",
 		contextMenu: "on",
 	};
+	window.addEventListener("DOMContentLoaded", () => {
+	        const ruffle = window.RufflePlayer.newest();
+	        const player = ruffle.createPlayer({
+	            quality: "low" // Explicitly set quality during player creation
+	        });
+	        document.body.appendChild(player);
+	        player.load("/path/to/your/file.swf"); // Adjust this path
+   	});
 	</script>
 	<body>
 		<div id="flashContent">
