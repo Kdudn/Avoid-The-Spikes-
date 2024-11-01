@@ -20,7 +20,7 @@
 	
 	<body>
 		<div id="flashContent">
-			<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="935" height="680" id="Dodge Falling Objects" align="middle">
+			<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="935" height="680" id="Dodge Falling Objects" tabindex="0" align="middle">
 				<param name="movie" value="Dodge Falling Objects.swf" />
 				<param name="quality" value="low" />
 				<param name="bgcolor" value="#ffffff" />
@@ -53,6 +53,11 @@
 				</object>
 				<!--<![endif]-->
 				<!--5:54-->
+				<script>
+				window.onload = function() {
+				      document.getElementById('Dodge Falling Objects').focus();
+				};
+				</script>
 			</object>
 		</div>
 	</body>
