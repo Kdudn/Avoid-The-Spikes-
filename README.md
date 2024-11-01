@@ -13,3 +13,14 @@ v2: new animations and hearts spawn
 v3 demo: spikes spawn faster every 25 points, 
 
 v3: coming soon...
+
+bug reports:
+andrewroaldtan@gmail.com
+
+v1 demo: text not loading correctly
+  
+text only using device font
+
+v2 demo: death screen not working
+
+v3 demo: on death spawn intervals dont reset
