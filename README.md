@@ -15,7 +15,6 @@ v3 demo: spikes spawn faster every 25 points,
 v3: coming soon...
 
 bug reports:
-andrewroaldtan@gmail.com
 
 v1 demo: text not loading correctly
   
