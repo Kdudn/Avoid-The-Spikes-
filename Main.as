@@ -136,7 +136,7 @@
 				player.x = stage.stageWidth - phw;
 			}else if(player.x - phw < 0) {
 				player.x = 0 + phw;
-			} else if(!gamePause && lives > 1) {
+			} else if(!gamePause && lives > 0) {
 				switch(e.keyCode) {
 					case Keyboard.LEFT:
 						v = -speed;
