@@ -43,7 +43,7 @@
 			addEventListener(Event.ENTER_FRAME, update);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, oKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, oKeyUp);
-			stage.addEventListener(MouseEvent.MOUSE_UP, function(e:MouseEvent) {
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent) {
 									stage.focus = stage;
 								});
 			arrowleft.addEventListener(MouseEvent.MOUSE_DOWN, goLeft);
@@ -98,6 +98,7 @@
 			}
 		}
 		function goRight(e:MouseEvent):void {
+			stage.focus = stage;
 			if(player.x + phw > stage.stageWidth) {
 				player.x = stage.stageWidth - phw;
 			}else if(player.x - phw < 0) {
@@ -108,6 +109,7 @@
 			player.play();
 		}
 		function goLeft(e:MouseEvent):void {
+			stage.focus = stage;
 			if(player.x + phw > stage.stageWidth) {
 				player.x = stage.stageWidth - phw;
 			}else if(player.x - phw < 0) {
@@ -178,6 +180,7 @@
 			}
 		}
 		function update(e:Event):void {
+			trace(stage.focus);
 			if(!gamePause) {
 				var reversePause:int = pausescreen.currentFrame - 1;
 				pausescreen.gotoAndStop(reversePause);
@@ -187,7 +190,7 @@
 				pausescreentext.play();
 			}
 			if(stage.focus == null && begin) {
-				gamePause = true;;
+				gamePause = true;
 			}
 			if(begin && !gamePause) {
 				if(score > sharedData.data.highScoreSO) {
