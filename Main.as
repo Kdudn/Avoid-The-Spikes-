@@ -62,6 +62,14 @@
 													 startscreen.play();
 													 stage.focus = stage;
 													 });
+			pausebutton.addEventListener(MouseEvent.MOUSE_UP, function(e:MouseEvent) {
+											trace("test");
+											if(gamePause && begin) {
+												gamePause = false;
+											} else if(!gamePause && begin) {
+												gamePause = true;
+											}
+										});
 			player.gotoAndStop(1);
 			ink.stop();
 			retry.stop();
@@ -128,7 +136,7 @@
 				player.x = stage.stageWidth - phw;
 			}else if(player.x - phw < 0) {
 				player.x = 0 + phw;
-			} else if(!gamePause) {
+			} else if(!gamePause && lives > 1) {
 				switch(e.keyCode) {
 					case Keyboard.LEFT:
 						v = -speed;
@@ -144,9 +152,9 @@
 			}
 			switch(e.keyCode) {
 				case Keyboard.ESCAPE:
-					if(gamePause && begin) {
+					if(gamePause && begin && lives > 0) {
 						gamePause = false;
-					} else if(!gamePause && begin) {
+					} else if(!gamePause && begin && lives > 0) {
 						gamePause = true;
 					}
 			}
@@ -189,7 +197,7 @@
 				pausescreen.play();
 				pausescreentext.play();
 			}
-			if(stage.focus == null && begin) {
+			if(stage.focus == null && begin && lives > 1) {
 				gamePause = true;
 			}
 			if(begin && !gamePause) {
