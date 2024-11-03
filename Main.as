@@ -34,12 +34,15 @@
 		var explosionSound:Sound = new explosionwav();
 		var gamePause:Boolean = false;
 		var powerupSound:Sound = new powerupwav();
+		var money:int = 0;
 		public function Main() {
 			spawnTimer.addEventListener(TimerEvent.TIMER, new_spike);
 			spawnTimer.addEventListener(TimerEvent.TIMER, new_heart);
+			spawnTimer.addEventListener(TimerEvent.TIMER, new_coin);
 			spawnTimer.start();
-			sharedData = SharedObject.getLocal("highScoreSO");
+			sharedData = SharedObject.getLocal("gameData");
 			highscore = sharedData.data.highScoreSO;
+			money = sharedData.data.moneySO;
 			addEventListener(Event.ENTER_FRAME, update);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, oKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, oKeyUp);
@@ -83,6 +86,8 @@
 			stage.quality = StageQuality.LOW;
 			if(sharedData.data.highScoreSO == undefined) {
 				sharedData.data.highScoreSO = 0;
+			} else if(sharedData.data.moneySO == undefined) {
+				sharedData.data.moneySO = 0;
 			}
 
 		}
@@ -177,18 +182,28 @@
 			}
 		}
 		function new_heart(e:TimerEvent):void {
-			if(Math.random() * 100 <= 3 && lives < 3 && !gamePause) {
+			if(Math.random() * 100 <= 3 && lives < 3 && !gamePause && startscreen.currentFrame == 50) {
 				var NHeart:heartmc = new heartmc();
-				var HspawnX:Number = player.x;
-				var HminX:Number = Math.max(0, HspawnX - 100);
-				var HmaxX:Number = Math.min(stage.stageWidth, HspawnX + 100);
+				var HspawnX:Number = stage.width / 2;
+				var HminX:Number = Math.max(0, 0);
+				var HmaxX:Number = Math.min(stage.stageWidth, HspawnX * 2);
 				NHeart.x = Math.random() * (HmaxX - HminX) + HminX;
 				addChild(NHeart);
 				objects.push(NHeart);
 			}
 		}
+		function new_coin(e:TimerEvent):void {
+			if(Math.random() * 100 <= 15 && !gamePause && startscreen.currentFrame == 50) {
+				var NCoin:coinmc = new coinmc();
+				var HspawnX:Number = stage.width / 2;
+				var HminX:Number = Math.max(0, 0);
+				var HmaxX:Number = Math.min(stage.stageWidth, HspawnX * 2);
+				NCoin.x = Math.random() * (HmaxX - HminX) + HminX;
+				addChild(NCoin);
+				objects.push(NCoin);
+			}
+		}
 		function update(e:Event):void {
-			trace(stage.focus);
 			if(!gamePause) {
 				var reversePause:int = pausescreen.currentFrame - 1;
 				pausescreen.gotoAndStop(reversePause);
@@ -211,6 +226,7 @@
 				}
 				player.x += v;
 				textscore.text = String(score);
+				moneytext.text = String(money);
 				if(score % 25 == 0 && score > 0 && !flashing) {
 					spawnInterval -= 125;
 					spawnTimer.delay = spawnInterval;
@@ -232,7 +248,15 @@
 				for(var i:int = objects.length - 1; i >= 0; i--) {
 					var obj:MovieClip = objects[i];
 					setChildIndex(obj, 0);
-					if(obj.currentFrame == 1) {
+					if(obj is spikemc) {
+						if(obj.currentFrame == 1) {
+							obj.y += gravity;
+						}
+					} else if(obj is coinmc) {
+						if(obj.currentFrame < 13) {
+							obj.y += gravity
+						}
+					}else {
 						obj.y += gravity;
 					}
 					if(obj.y > stage.stageHeight + 61) {
@@ -260,6 +284,17 @@
 							if(contains(obj)) {
 								removeChild(obj);
 								objects.splice(i, 1);
+							}
+						} else if(obj is coinmc) {
+							if (!obj.collected) {
+								money++;
+								sharedData.data.moneySO = money;
+								obj.gotoAndPlay(13); // Play coin collection animation
+								obj.collected = true; // Set collected flag to prevent repeated calls
+							}
+							if(contains(obj) && obj.currentFrame == 28) {
+								removeChild(obj);
+								objects.splice(i,1);
 							}
 						}
 					}
