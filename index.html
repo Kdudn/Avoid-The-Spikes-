@@ -3,13 +3,15 @@
 <head>
     <title>Avoid The Spikes!</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style type="text/css" media="screen">
-        html, body { height:100%; background-color: #ffffff; }
-        body { margin:0; padding:0; overflow:hidden; display: flex; flex-direction: column; align-items: center; }
+        html, body { height:100%; background-color: #ffffff; margin:0; padding:0; overflow:hidden; display: flex; flex-direction: column; align-items: center; }
         #flashContent {
-            width:935px;
-            height:680px;
-            border: 5px solid #000; /* Black border around the Flash game */
+            width: 100vw;
+            height: 100vh;
+            max-width: 935px;
+            max-height: 680px;
+            border: 5px solid #000;
         }
         .button {
             margin-top: 10px;
@@ -20,33 +22,33 @@
             font-family: Arial, sans-serif;
             display: inline-block;
         }
-        #bugReport {
-            background-color: #f00;
-            margin-right: 10px;
-        }
-        #bugReport:hover {
-            background-color: #c00;
-        }
-        #sourceCode {
-            background-color: #6e5494; /* GitHub purple */
-        }
-        #sourceCode:hover {
-            background-color: #5b4578;
-        }
+        #bugReport { background-color: #f00; margin-right: 10px; }
+        #bugReport:hover { background-color: #c00; }
+        #sourceCode { background-color: #6e5494; }
+        #sourceCode:hover { background-color: #5b4578; }
     </style>
 </head>
 <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
 <script>
-window.RufflePlayer.config = {
-    autoplay: "on",
-    unmuteOverlay: "hidden",
-    contextMenu: "off",
-};
+window.RufflePlayer.config = { autoplay: "on", unmuteOverlay: "hidden", contextMenu: "rightClickOnly" };
+
+function checkOrientation() {
+    var rotateMessage = document.getElementById('rotateMessage');
+    if (window.innerHeight > window.innerWidth) {
+        rotateMessage.style.display = 'block';
+    } else {
+        rotateMessage.style.display = 'none';
+    }
+}
+
+window.addEventListener("orientationchange", checkOrientation);
+window.addEventListener("load", checkOrientation);
+window.addEventListener("resize", checkOrientation);
 </script>
 
 <body>
     <div id="flashContent">
-        <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="935" height="680" id="Dodge Falling Objects" align="middle">
+        <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="100%" height="100%" id="Dodge Falling Objects" align="middle">
             <param name="movie" value="https://kdudn.github.io/Avoid-The-Spikes-/Dodge%20Falling%20Objects.swf" />
             <param name="quality" value="low" />
             <param name="bgcolor" value="#ffffff" />
@@ -59,7 +61,7 @@ window.RufflePlayer.config = {
             <param name="salign" value="" />
             <param name="allowScriptAccess" value="sameDomain" />
             <!--[if !IE]>-->
-            <object type="application/x-shockwave-flash" data="https://kdudn.github.io/Avoid-The-Spikes-/Dodge%20Falling%20Objects.swf" width="935" height="680">
+            <object type="application/x-shockwave-flash" data="https://kdudn.github.io/Avoid-The-Spikes-/Dodge%20Falling%20Objects.swf" width="100%" height="100%">
                 <param name="movie" value="https://kdudn.github.io/Avoid-The-Spikes-/Dodge%20Falling%20Objects.swf" />
                 <param name="quality" value="low" />
                 <param name="bgcolor" value="#ffffff" />
