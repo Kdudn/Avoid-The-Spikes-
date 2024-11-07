@@ -26,6 +26,7 @@
 		var flashing:Boolean = false;
 		var flashCount:int = 0;
 		var spawnTimer:Timer = new Timer(spawnInterval);
+		var spawnTimer2:Timer = new Timer(1350);
 		var mobilemode:Boolean = false;
 		var shopback:Boolean = false;
 		var begin:Boolean = false;
@@ -35,11 +36,14 @@
 		var gamePause:Boolean = false;
 		var powerupSound:Sound = new powerupwav();
 		var money:int = 0;
+		var coinSound:Sound = new pickupCoinwav();
+		var heartSound:Sound = new collectHeartwav();
 		public function Main() {
 			spawnTimer.addEventListener(TimerEvent.TIMER, new_spike);
-			spawnTimer.addEventListener(TimerEvent.TIMER, new_heart);
-			spawnTimer.addEventListener(TimerEvent.TIMER, new_coin);
+			spawnTimer2.addEventListener(TimerEvent.TIMER, new_heart);
+			spawnTimer2.addEventListener(TimerEvent.TIMER, new_coin);
 			spawnTimer.start();
+			spawnTimer2.start();
 			sharedData = SharedObject.getLocal("gameData");
 			highscore = sharedData.data.highScoreSO;
 			money = sharedData.data.moneySO;
@@ -66,7 +70,6 @@
 													 stage.focus = stage;
 													 });
 			pausebutton.addEventListener(MouseEvent.MOUSE_UP, function(e:MouseEvent) {
-											trace("test");
 											if(gamePause && begin) {
 												gamePause = false;
 											} else if(!gamePause && begin) {
@@ -254,10 +257,12 @@
 						}
 					} else if(obj is coinmc) {
 						if(obj.currentFrame < 13) {
-							obj.y += gravity
+							obj.y += gravity - 2;
 						}
-					}else {
-						obj.y += gravity;
+					}else if(obj is heartmc) {
+						if(obj.currentFrame == 1) {
+							obj.y += gravity - 1;
+						}
 					}
 					if(obj.y > stage.stageHeight + 61) {
 						if(contains(obj)) {
@@ -280,14 +285,19 @@
 								objects.splice(i, 1);
 							}
 						} else if(obj is heartmc) {
-							lives++;
-							if(contains(obj)) {
+							if(obj.currentFrame == 1) {
+								lives++;
+								heartSound.play();
+							}
+							obj.play();
+							if(contains(obj) && obj.currentFrame == 25) {
 								removeChild(obj);
 								objects.splice(i, 1);
 							}
 						} else if(obj is coinmc) {
 							if (!obj.collected) {
 								money++;
+								coinSound.play();
 								sharedData.data.moneySO = money;
 								obj.gotoAndPlay(13); // Play coin collection animation
 								obj.collected = true; // Set collected flag to prevent repeated calls
@@ -335,6 +345,7 @@
 					shopbackbutton.gotoAndStop(before2);
 				}
 			}
+			sharedData.flush();
 		}
 		function updateLives():void {
 			if(lives >= 3) {
